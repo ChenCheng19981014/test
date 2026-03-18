@@ -1,35 +1,31 @@
-// ts-ignore
+// @ts-ignore
 import { createRouter, createWebHashHistory } from "vue-router";
 import beforeEach from "./before-each";
 
 const routes = [
   {
     path: "/",
-    name: "app",
-    redirect: "/gis",
-    children: [
-      {
-        path: "/gis",
-        name: "gis",
-        component: () => import("@/views/compoment/gis.vue"),
-      },
-      {
-        path: "/waterFlow",
-        name: "waterFlow",
-        component: () => import("@/views/compoment/waterFlow.vue"),
-      },
-    ],
+    name: "home",
+    redirect: "/blog",
   },
-    {
-    path: "/test",
-    name: "test",
-    component: () => import("@/views/compoment/test.vue"),
+  {
+    path: "/blog",
+    name: "blog",
+    component: () => import("@/views/BlogIndex.vue"),
+  },
+  {
+    path: "/blog/:slug",
+    name: "blog-post",
+    component: () => import("@/views/BlogPost.vue"),
+  },
+  {
+    path: "/resume",
+    name: "resume",
+    component: () => import("@/views/ResumePage.vue"),
   },
 ];
 
-// createRouter用于创建路由器实例，可以管理多个路由
 const router = createRouter({
-  // 路由的模式的设置
   history: createWebHashHistory(),
   routes,
 });

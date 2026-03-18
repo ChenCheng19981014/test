@@ -1,0 +1,202 @@
+/** 配图使用 Unsplash（可商用，建议后续替换为自己的图） */
+export interface PostImage {
+  src: string;
+  alt: string;
+  /** 插在第几段文字之后（0 = 第一段前不插，1 = 第一段后） */
+  afterParagraph: number;
+}
+
+export interface Post {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readMin: number;
+  tag: string;
+  featured?: boolean;
+  /** 列表/详情顶图 */
+  coverImage?: string;
+  body: string[];
+  /** 正文中的插图 */
+  inlineImages?: PostImage[];
+}
+
+export const posts: Post[] = [
+  {
+    slug: "cursor-frontend-workflow",
+    title: "Cursor 在前端日常里：我怎么用、哪里不用",
+    excerpt:
+      "Composer、@ 文件、规则文件与 Code Review——把 AI 当「结对同事」而不是「替写机器」。",
+    date: "2026-03-17",
+    readMin: 9,
+    tag: "tooling",
+    featured: true,
+    coverImage: "/assets/carousel/ai-05.jpg",
+    body: [
+      "面试里常被问：你用 Cursor 吗？我的回答是：**用，但有边界**。适合批量改名、补全样板、根据现有风格改组件；不适合在未读上下文的情况下让它「猜」业务规则。",
+      "我的习惯流程是：先自己理清文件边界，再用 Composer 做多文件编辑；复杂逻辑用 @ 引用具体文件，避免模型幻觉路径。项目根目录放简短规则（技术栈、命名、禁止事项），比每次口头描述更高效。",
+      "**不会交给 AI 的事**：安全敏感配置、未评审的依赖升级、与用户资金/权限相关的逻辑——这些必须人眼过一遍。把这一点写进博客，既是给自己立规矩，也方便和面试官对齐「工程意识」。",
+      "和纯补全相比，Cursor 的价值在于「上下文窗口 + 编辑动作」绑定。缺点是容易养成不读生成代码的习惯；我的对策是：**生成的 diff 必须能用自己的话解释一遍**，解释不了就重写或拆小任务。",
+    ],
+    inlineImages: [
+      {
+        afterParagraph: 2,
+        src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=2400&q=92",
+        alt: "代码与编辑器工作区",
+      },
+    ],
+  },
+  {
+    slug: "claude-code-agentic",
+    title: "Claude Code 与「氛围编程」：Agent 能到哪一步",
+    excerpt:
+      "长上下文、终端内迭代和任务拆解——适合探索型需求，生产环境仍要测试与审查兜底。",
+    date: "2026-03-16",
+    readMin: 10,
+    tag: "ai",
+    featured: true,
+    coverImage: "/assets/carousel/ai-01.jpg",
+    body: [
+      "Claude Code 这类工具把「对话」和「改仓库」绑在一起，很像有一个一直在终端里的实习生。优点是**多轮澄清**成本低，适合从零搭脚手架、写脚本、扫一遍目录结构。",
+      "痛点也很实在：任务一大就容易「做一半忘一半」。我的做法是先把需求拆成可验证的小步（例如：先只实现路由，再补样式），每步跑通测试或手动点一遍再继续。",
+      "和 Cursor 的对比没有绝对输赢——有人喜欢用 IDE 一体化，有人喜欢 CLI + 自己的编辑器。面试时可以强调：**选工具看团队规范与个人节奏，核心是代码可归因、可回滚**。",
+      "如果你要在作品里演示：可以录一段「从空目录到可部署静态站」的加速片段（脱敏），比空谈「我会用 AI」更有说服力。",
+    ],
+  },
+  {
+    slug: "ai-code-maintainability",
+    title: "AI 写的代码，怎么不变成「一次性 spaghetti」",
+    excerpt:
+      "约束输出、测试边界、目录约定——让生成代码能进 Code Review、能半年后还能改。",
+    date: "2026-03-14",
+    readMin: 8,
+    tag: "essay",
+    featured: true,
+    coverImage: "/assets/carousel/ai-02.jpg",
+    body: [
+      "模型很擅长「看起来像能跑」的代码。风险在于：**类型敷衍、错误处理缺失、魔法数字**。我会在规则里写明：TypeScript 严格模式、优先显式类型、异常要有用户可见或日志路径。",
+      "测试不是炫技：哪怕只有关键路径的 e2e 或几个单元测试，也能在重构时拦住「AI 改坏一行」的情况。个人项目同样可以养成这个习惯。",
+      "目录结构提前定好（views / components / composables / data），比事后让 AI「整理项目」要稳。本博客就是把文章放在 `data/posts.ts`，扩展时只需约定字段，而不是满屏字符串。",
+    ],
+  },
+  {
+    slug: "this-site-for-interview",
+    title: "这个个人站：面试时我可以怎么讲",
+    excerpt:
+      "Vue3 + Vite + Hash 路由、主题与内容分离——小项目也能讲清动机、权衡和下一步。",
+    date: "2026-03-12",
+    readMin: 7,
+    tag: "meta",
+    featured: true,
+    coverImage: "/assets/carousel/ai-03.jpg",
+    body: [
+      "**动机**：集中展示写作习惯、技术审美和工程化常识（部署、可访问性、性能意识），比只丢 GitHub 链接更立体。",
+      "**技术选型**：Vue 3 Composition API、Vue Router Hash 模式（静态托管免服务端路由配置）、SCSS 与 CSS 变量做深浅色。文章数据先用 TypeScript 对象，后续可换 Markdown + 构建时解析或 headless CMS。",
+      "**交互**：首页轮播与滚动视差用于演示「在不大包大揽的前提下做体验」；`prefers-reduced-motion` 下会减弱动效，体现对可访问性的考虑。",
+      "**下一步可做**：RSS、标签归档、Markdown 管线、GitHub Action 已与仓库联动部署。这些都可以作为「如果你来我们会怎么演进」的谈资。",
+    ],
+  },
+  {
+    slug: "frontend-radar-2026",
+    title: "前端雷达：最近在跟的几件事",
+    excerpt:
+      "性能与可访问性、SSR/SSG 取舍、以及 AI 辅助下的「人的职责」变清晰了。",
+    date: "2026-03-11",
+    readMin: 6,
+    tag: "weekly",
+    featured: false,
+    coverImage:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=2400&q=92",
+    body: [
+      "框架层面 Vue / React 仍在拼开发体验与生态；对求职者来说，**把一门吃透 + 读懂文档与源码入口** 比追每一个新轮子重要。",
+      "性能：Core Web Vitals、图片懒加载、按需分包——个人站虽小，写上几条实践，面试能举具体例子。",
+      "AI 不会消灭前端，但会淘汰「只堆 UI 不问为什么」的写法。更有价值的是：**架构、评审、安全、产品与用户的翻译**。",
+    ],
+  },
+  {
+    slug: "crayfish-and-demand",
+    title: "小龙虾季与「需求剥壳」",
+    excerpt:
+      "夏日大排档同款社交货币，顺便借个梗：好需求要像剥虾——先看清壳，再取肉。",
+    date: "2026-03-08",
+    readMin: 4,
+    tag: "life",
+    featured: true,
+    coverImage: "/assets/carousel/ai-04.jpg",
+    body: [
+      "每年春夏，小龙虾总会和夜市、球赛、团建一起上热搜。它像技术圈里的某个「爆火梗」——**情绪到位、传播快、参与门槛低**。做内容或产品时，这种「可拍照、可讨论」的属性很值得琢磨。",
+      "强行类比一下需求管理：**整只虾上桌是 PRD，剥壳是拆任务，蘸料是验收标准**。壳没剥干净就下锅，吃起来费劲；需求没拆清楚就开发，返工同样费劲。",
+      "这篇算轻松向随笔，和技术文放一起，是为了提醒自己：**博客不必全是干货，有一点生活与观察，面试时也更像真人**。",
+    ],
+  },
+  {
+    slug: "hello-blog",
+    title: "搭建个人站点与写作",
+    excerpt:
+      "用 Vue 与静态数据搭可读、可扩展的骨架；列表、详情、主题与动效都可以逐步加。",
+    date: "2026-03-06",
+    readMin: 5,
+    tag: "essay",
+    featured: false,
+    coverImage:
+      "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=2400&q=92",
+    body: [
+      "写作和代码一样，是把脑子里的结构落到可复用形式上。个人站不必一步到位：先有稳定排版与导航，再丰富内容与数据源。",
+      "参考成熟博客的信息架构——精选、最新、标签——读者好找，自己也更有动力更新。",
+      "后续可接 Markdown、RSS、CMS；当前用 `posts` 集中管理字段，已经为扩展留好位置。",
+    ],
+  },
+  {
+    slug: "weekly-dev-notes",
+    title: "开发手记：路由、布局与主题",
+    excerpt:
+      "布局组件托管顶栏与主题，子路由只关心页面；CSS 变量挂在根节点上统一换肤。",
+    date: "2026-03-05",
+    readMin: 6,
+    tag: "weekly",
+    featured: false,
+    coverImage:
+      "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?auto=format&fit=crop&w=2400&q=92",
+    body: [
+      "单页应用里，`home` 布局包住 `<router-view />`，博客与简历共享同一套视觉与主题状态，避免每页重复顶栏。",
+      "`html[data-theme]` + CSS 变量切换深浅色，组件内只引用变量名，维护成本低。",
+      "Hash 路由适合纯静态托管；若以后同域 SSR，可再评估 history 模式与服务器重写规则。",
+    ],
+  },
+  {
+    slug: "resume-and-portfolio",
+    title: "简历页与外链：怎么配合投简历",
+    excerpt: "站内结构化展示 + PDF/在线作品集外链，各取所长。",
+    date: "2026-03-01",
+    readMin: 3,
+    tag: "note",
+    featured: false,
+    coverImage:
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=2400&q=92",
+    body: [
+      "站内简历适合面试前快速浏览；完整版 PDF 或飞书文档适合 HR 系统上传与打印。",
+      "显眼按钮链到外链，减少「找不到完整简历」的摩擦。记得定期更新两处内容保持一致。",
+    ],
+  },
+];
+
+/** 轮播：取带封面且精选的前几条，顺序可调 */
+export function getCarouselPosts(): Post[] {
+  return posts
+    .filter((p) => p.featured && p.coverImage)
+    .slice(0, 5);
+}
+
+export function getPostBySlug(slug: string): Post | undefined {
+  return posts.find((p) => p.slug === slug);
+}
+
+export function getFeaturedPosts(): Post[] {
+  return posts.filter((p) => p.featured);
+}
+
+export function getPostsByDate(): Post[] {
+  return [...posts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}

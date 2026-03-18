@@ -1,16 +1,28 @@
 <template>
-  <div class="mainBody">
-    <router-view />
+  <div class="site-shell">
+    <SiteHeader />
+    <div class="main-wrap">
+      <router-view />
+    </div>
+    <SiteFooter />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import SiteHeader from "@/components/SiteHeader.vue";
+import SiteFooter from "@/components/SiteFooter.vue";
 </script>
+
 <style scoped lang="scss">
-.mainBody {
+.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-wrap {
+  flex: 1;
   width: 100%;
-  height: 100%;
-  background-color: #777;
+  overflow-x: hidden;
 }
 </style>
