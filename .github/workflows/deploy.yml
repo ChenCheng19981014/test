@@ -1,7 +1,6 @@
 # 给这个工作流起个名字
 name: my-test-lib
 
-# 触发器：main / master 推送时执行（与仓库默认分支一致即可）
 on:
   push:
     branches: [main, master]
@@ -14,16 +13,20 @@ jobs:
       contents: write
 
     steps:
+      # v5 起基于 Node 24，消除 “Node.js 20 actions are deprecated” 警告
       - name: 拉取代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
-          cache: yarn # 缓存 yarn，加速构建
+          node-version: "22"
+          # 勿在此用 cache: yarn —— 文档要求 Yarn 已预装，裸 Ubuntu 无 yarn 会导致失败
 
-      # 项目只有 yarn.lock、无 package-lock.json，不能用 npm ci（会报错退出）
+      # 与本地 yarn.lock（Yarn 1）一致；运行器默认没有 yarn 命令
+      - name: 安装 Yarn Classic
+        run: npm install -g yarn@1.22.22
+
       - name: 安装依赖
         run: yarn install --frozen-lockfile
 
