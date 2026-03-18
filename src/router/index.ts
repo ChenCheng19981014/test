@@ -6,11 +6,10 @@ const routes = [
   {
     path: "/",
     name: "app",
-    redirect: "/gis", // 重定向
-    // component: () => import("@/views/home.vue"),
+    redirect: "/gis",
     children: [
       {
-        path: "/gis/:platform/:token",
+        path: "/gis",
         name: "gis",
         component: () => import("@/views/compoment/gis.vue"),
       },
