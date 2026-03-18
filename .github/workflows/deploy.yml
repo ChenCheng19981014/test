@@ -1,0 +1,42 @@
+# 给这个工作流起个名字
+name: my-test-lib
+
+# 触发器：什么时候自动执行？
+on:
+  push:
+    branches: ["master"] # 当有代码推送到 main 分支时触发
+
+# 定义要执行的任务
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 在最新版的 Ubuntu 虚拟机环境里运行
+
+    # 设置权限，让工作流有权限向你的仓库写内容（用于部署）
+    permissions:
+      contents: write
+
+    # 任务步骤
+    steps:
+      # 1. 把你的代码拉取到虚拟机里
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      # 2. 安装 Node.js 环境
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # 使用 Node.js 20 版本
+
+      # 3. 安装项目依赖 (npm ci 比 npm install 更快更安全，适合自动化环境)
+      - name: 安装依赖
+        run: npm ci
+
+      # 4. 打包构建项目，生成静态文件 (通常是 dist 或 build 文件夹)
+      - name: 构建项目
+        run: npm run build
+
+      # 5. 部署！将构建出的文件夹（比如 dist）推送到仓库的 gh-pages 分支
+      - name: 部署到 GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # 这里要填你项目构建输出的文件夹名！ Vue 一般是 dist，React 可能是 build
